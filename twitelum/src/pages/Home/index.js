@@ -4,7 +4,7 @@ import NavMenu from '../../components/NavMenu'
 import Dashboard from '../../components/Dashboard'
 import Widget from '../../components/Widget'
 import TrendsArea from '../../components/TrendsArea'
-import Tweet from '../../components/Tweet'
+import Tweet from '../../containers/TweetPadrao'
 import Modal from '../../components/Modal'
 import { ReactReduxContext } from 'react-redux';
 import * as TweetsAPI from '../../api/TweetsAPI';
@@ -26,7 +26,8 @@ class Home extends Component {
   componentWillMount() {
     this.context.store.subscribe(() => {
       this.setState({
-        tweets: this.context.store.getState()
+        tweets: this.context.store.getState().lista,
+        tweetAtivo: this.context.store.getState().tweetAtivo,
       });
     });
 
@@ -39,17 +40,19 @@ class Home extends Component {
   }
 
   abreModalParaTweet = (event, idDoTweet) => {
-    const isTweetFooter = event.target.closest('.tweet__footer');
-    if (isTweetFooter) return false;
     const tweetSelecionado = this.state.tweets.find(tweet => tweet._id === idDoTweet);
-    this.setState({ tweetAtivo: tweetSelecionado });
+    /*const isTweetFooter = event.target.closest('.tweet__footer');
+    if (isTweetFooter) return false;
+    this.setState({ tweetAtivo: tweetSelecionado });*/
+    this.context.store.dispatch({type:"ADD_TWEET_ATIVO",tweetSelecionado});
   }
-
+  
   fechaModal = (event) => {
-    const isModal = event.target.closest('.widget');
+    /*const isModal = event.target.closest('.widget');
     if (!isModal) {
       this.setState({ tweetAtivo: {} });
-    }
+    }*/
+    this.context.store.dispatch({type:"REMOVE_TWEET_ATIVO"});
   }
 
   atualizaTweets = () => {
@@ -67,10 +70,12 @@ class Home extends Component {
     this.setState({ novoTweet: '' });
   };
 
+  /*
   removeTweet = idDoTweet => {
     this.context.store.dispatch({type:'REMOVE_TWEET',idDoTweet});
     
   }
+*/
 
   render() {
     return (
@@ -101,7 +106,6 @@ class Home extends Component {
                 {
                   this.state.tweets.map((tweet, index) => {
                     return <Tweet key={tweet._id}
-                      removeHandler={(event) => this.removeTweet(tweet._id)}
                       tweetInfo={tweet} conteudo={tweet.conteudo}
                       handleAbreModalParaTweet={(event) => this.abreModalParaTweet(event, tweet._id)} />
                   })
