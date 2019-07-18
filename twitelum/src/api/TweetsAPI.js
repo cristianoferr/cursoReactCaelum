@@ -1,5 +1,29 @@
 import ApiService from './ApiService.js'
 
+function handleErrors(response) {
+    if (!response.ok) {
+        throw Error(response.statusText);
+    }
+    return response;
+}
+
+
+export const like = (idTweetLikeado, liker) => {
+    return (dispatch) => {
+        ApiService.likeTweet(idTweetLikeado)
+            .then(handleErrors)
+            .then(response => response.json())
+            .then(response => {
+                console.log(response);
+                dispatch({ type: 'LIKE', idTweetLikeado, liker: response.liker });
+            }).catch(function (error) {
+                console.log(error);
+            });
+
+    }
+}
+
+
 export const carrega = () => {
     return (dispatch) => {
         ApiService.carregaTweets().then(response => response.json())

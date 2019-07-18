@@ -12,6 +12,29 @@ function tweetsReducer(state = { lista: [], tweetAtivo: {} }, action = {}) {
         };
     }
 
+
+    if (action.type === 'LIKE') {
+        const lista = state.lista.filter(tweet => {
+            if (tweet._id === action.idTweetLikeado) {
+                const { likeado, totalLikes } = tweet;
+                if (tweet.likeado) {
+                    tweet.likes = tweet.likes.filter(like => like.usuario.login !==action.liker);
+                } else {
+                    tweet.likes = [{ usuario: { login: action.liker } }, ...tweet.likes];
+                }
+                tweet.likeado = !likeado;
+                tweet.totalLikes = likeado ? totalLikes - 1 : totalLikes + 1;
+            }
+            return tweet;
+        });
+
+        const tweetAtivoAtualizado = lista.find(tweet => tweet._id === state.tweetAtivo._id);
+        return {
+            tweetAtivo: { ...tweetAtivoAtualizado } || {},
+            lista
+        };
+    }
+
     if (action.type === 'ADICIONA_TWEET') {
         // state = [action.novoTweet, ...state];
         return { ...state, lista: [action.novoTweet, ...state.lista] };

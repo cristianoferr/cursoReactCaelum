@@ -10,9 +10,15 @@ const mapDispatchToProps = (dispatch, propsRecebidos) => {
     return {
         removeHandler: () => {
             dispatch(TweetsAPI.remove(propsRecebidos.tweetInfo._id));
+        },
+
+        likeHandler: () => {
+            dispatch(TweetsAPI.like(propsRecebidos.tweetInfo._id));
         }
     }
 }
+
+
 
 const construtoraDeComponent = connect(mapStateToProps, mapDispatchToProps);
 

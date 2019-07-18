@@ -40,6 +40,9 @@ class Home extends Component {
   }
 
   abreModalParaTweet = (event, idDoTweet) => {
+    if (event.target.classList.contains("pointerFix")){
+      return;
+    }
     const tweetSelecionado = this.state.tweets.find(tweet => tweet._id === idDoTweet);
     /*const isTweetFooter = event.target.closest('.tweet__footer');
     if (isTweetFooter) return false;
@@ -48,6 +51,9 @@ class Home extends Component {
   }
   
   fechaModal = (event) => {
+    if (event.target.classList.contains("pointerFix")){
+      return;
+    }
     /*const isModal = event.target.closest('.widget');
     if (!isModal) {
       this.setState({ tweetAtivo: {} });

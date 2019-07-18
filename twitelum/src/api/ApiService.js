@@ -6,6 +6,13 @@ class ApiService {
         )
     }
 
+    static likeTweet=(idDoTweet)=>{
+        return fetch(`https://twitelum-api.herokuapp.com/tweets/${idDoTweet}/like?X-AUTH-TOKEN=${localStorage.getItem('TOKEN')}`, {
+            method: 'POST'
+        }
+        );
+    }
+
    static adicionaTweet = (novoTweet) => {
         return fetch(`${API_URL}/tweets?X-AUTH-TOKEN=${localStorage.getItem('TOKEN')}`, {
             method: 'POST',
