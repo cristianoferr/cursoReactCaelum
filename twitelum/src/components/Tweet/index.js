@@ -19,7 +19,7 @@ class Tweet extends Component {
                 <footer className="tweet__footer">
                     {
                         this.props.tweetInfo.removivel &&
-                        <button onClick={this.props.removeHandler} className="btn btn--blue btn--remove">X</button>
+                        <button onClick={this.props.removeHandler} className="pointerFix btn btn--blue btn--remove">X</button>
                     }
                     <button onClick={this.props.likeHandler} className="btn btn--clean pointerFix">
                         <svg className={`icon icon--small pointerFix iconHeart ${this.props.tweetInfo.likeado ? 'iconHeart--active' : ''}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 47.5 47.5">

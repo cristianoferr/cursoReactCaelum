@@ -26,8 +26,8 @@ class Home extends Component {
   componentWillMount() {
     this.context.store.subscribe(() => {
       this.setState({
-        tweets: this.context.store.getState().lista,
-        tweetAtivo: this.context.store.getState().tweetAtivo,
+        tweets: this.context.store.getState().tweets.lista,
+        tweetAtivo: this.context.store.getState().tweets.tweetAtivo,
       });
     });
 
@@ -40,25 +40,25 @@ class Home extends Component {
   }
 
   abreModalParaTweet = (event, idDoTweet) => {
-    if (event.target.classList.contains("pointerFix")){
+    if (event.target.classList.contains("pointerFix")) {
       return;
     }
     const tweetSelecionado = this.state.tweets.find(tweet => tweet._id === idDoTweet);
     /*const isTweetFooter = event.target.closest('.tweet__footer');
     if (isTweetFooter) return false;
     this.setState({ tweetAtivo: tweetSelecionado });*/
-    this.context.store.dispatch({type:"ADD_TWEET_ATIVO",tweetSelecionado});
+    this.context.store.dispatch({ type: "ADD_TWEET_ATIVO", tweetSelecionado });
   }
-  
+
   fechaModal = (event) => {
-    if (event.target.classList.contains("pointerFix")){
+    if (event.target.classList.contains("pointerFix")) {
       return;
     }
     /*const isModal = event.target.closest('.widget');
     if (!isModal) {
       this.setState({ tweetAtivo: {} });
     }*/
-    this.context.store.dispatch({type:"REMOVE_TWEET_ATIVO"});
+    this.context.store.dispatch({ type: "REMOVE_TWEET_ATIVO" });
   }
 
   atualizaTweets = () => {
@@ -108,6 +108,12 @@ class Home extends Component {
           </Dashboard>
           <Dashboard posicao="centro">
             <Widget>
+              {
+                this.context.store.getState().notificacao &&
+                <div className="notificacaoMsg">
+                  {this.context.store.getState().notificacao}
+                </div>
+              }
               <div className="tweetsArea">
                 {
                   this.state.tweets.map((tweet, index) => {

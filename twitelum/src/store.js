@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, combineReducers } from 'redux'
 import thunk from 'redux-thunk';
 
 
@@ -18,7 +18,7 @@ function tweetsReducer(state = { lista: [], tweetAtivo: {} }, action = {}) {
             if (tweet._id === action.idTweetLikeado) {
                 const { likeado, totalLikes } = tweet;
                 if (tweet.likeado) {
-                    tweet.likes = tweet.likes.filter(like => like.usuario.login !==action.liker);
+                    tweet.likes = tweet.likes.filter(like => like.usuario.login !== action.liker);
                 } else {
                     tweet.likes = [{ usuario: { login: action.liker } }, ...tweet.likes];
                 }
@@ -63,8 +63,18 @@ function tweetsReducer(state = { lista: [], tweetAtivo: {} }, action = {}) {
     return state;
 }
 
+function notificacaoReducer(state = '', action = {}) {
+    if (action.type === "ADD_NOTIFICACAO") {
+        state = action.notificacao;
+    }
+    if (action.type === "REMOVE_NOTIFICACAO") {
+        state = "";
+    }
+    return state;
+}
 
-const store = createStore(tweetsReducer, applyMiddleware(thunk));
+const combined = combineReducers({ tweets:tweetsReducer, notificacao:notificacaoReducer });
+const store = createStore(combined, applyMiddleware(thunk));
 console.log('Primeira versáo da store:', store.getState());
 //this.context.store=store;
 export default store;

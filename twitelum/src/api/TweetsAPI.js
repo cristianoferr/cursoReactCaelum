@@ -1,4 +1,6 @@
 import ApiService from './ApiService.js'
+import NotificacaoAPI from './NotificacaoAPI.js'
+
 
 function handleErrors(response) {
     if (!response.ok) {
@@ -60,6 +62,9 @@ export const remove = (idDoTweet) => {
                 console.log(response);
                 dispatch({ type: 'REMOVE_TWEET', idDoTweet });
                 dispatch({ type: 'REMOVE_TWEET_ATIVO' });
+
+                dispatch(NotificacaoAPI.disparaNotificacao('Tweet excluido com sucesso!'));
+               
                 //this.atualizaTweets();
             });
     }
